@@ -112,7 +112,7 @@ if [[ "$arg" =~ ^([a-zA-Z-]+): ]]; then
 		irc)
 			mime=x-scheme-handler/irc
 			;;
-		mailto | tg )
+		mailto|tg)
 			mime=x-scheme-handler/mailto
 			;;
 	esac
