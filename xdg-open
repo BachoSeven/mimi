@@ -13,7 +13,7 @@ need_terminal() {
 
 find_exec_in_desktop_file() {
 	# accepts Exec entries with arguments
-	grep '^Exec' "$@" | tail -1 | sed 's/^Exec=//' | sed 's/%.//' | sed 's/^"//g' | sed 's/" *$//g'
+	grep '^Exec' "$@" | head -1 | sed 's/^Exec=//' | sed 's/%.//' | sed 's/^"//g' | sed 's/" *$//g'
 }
 
 find_desktop_file_by() {
