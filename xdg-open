@@ -12,8 +12,8 @@ need_terminal() {
 }
 
 find_exec_in_desktop_file() {
-	# awk -F '[= ]' '$1 == "Exec" {print $2; exit}'
-	grep '^Exec' "$@" | tail -1 | sed 's/^Exec=//' | sed 's/%.//' | sed 's/^"//g' | sed 's/" *$//g' # Accepts Exec entries with arguments
+	# accepts Exec entries with arguments
+	grep '^Exec' "$@" | head -1 | sed 's/^Exec=//' | sed 's/%.//' | sed 's/^"//g' | sed 's/" *$//g'
 }
 
 find_desktop_file_by() {
@@ -33,7 +33,7 @@ run() {
 fork_run() {
 	echo "'$1' $(printf "%q " "${@:2}")"
 	if tty -s; then
-	  # In interactive mode, just run normally.
+	  # in interactive mode, just run normally.
 	  run "$@"
 	else
 	  run "$@" &
@@ -87,7 +87,7 @@ fi
 
 if [[ -e "$arg" ]]; then
 	# file or dir
-	mime="$(file -ib -- "$arg" | cut -d';' -f1)"
+	mime="$(file -b --mime-type "$arg")"
 	if [[ -f "$arg" ]]; then
 		ext="$(tr '[:upper:]' '[:lower:]' <<< "${arg##*.}")"
 	fi
@@ -130,7 +130,12 @@ if [[ "$arg" =~ ^([a-zA-Z-]+): ]]; then
 fi
 
 # executable with arguments
-[[ ! "$mime" ]] && [[ -x "$1" ]] && mime="$(file -b --mime-type "$1")"
+if [ ! "$mime" ] && [ -x "$1" ]; then
+	mime="$(file -b --mime-type "$1")"
+fi
+
+# symlink
+[ "$mime" = "inode/symlink" ] && mime="$(file -b --mime-type "$(realpath "$arg")")"
 
 # application mime is specific
 [[ "$mime" =~ ^(audio|image|text|video)/ ]] && general_mime="${BASH_REMATCH[1]}/"
@@ -150,6 +155,15 @@ MENU=${ALT_MENU:-dmenu}
 for search in $ext $protocol $mime $general_mime; do
 	app=($(find_in_config "$search"))
 	[[ "${app[0]}" == TERM ]] && exists "$TERM" && app[0]="$TERM"
+	# handle environmental variables
+	i=0
+	for w in "${app[@]}"; do
+		if [[ -n "$(echo "$w" | grep '^\$')" ]]; then
+			program="$(echo "$w" | sed 's/^\$//')"
+			app[$i]="$(env | grep "$program" | head -1 | cut -d = -f 2)"
+		fi
+		i=$((i+1));
+	done
 	[[ "${app[*]}" ]] && fork_run "${app[@]}" "$arg"
 done
 
