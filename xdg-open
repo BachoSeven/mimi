@@ -123,6 +123,8 @@ if [[ "$arg" =~ ^([a-zA-Z-]+): ]]; then
 			mime=x-scheme-handler/msteams ;;
 		element)
 			mime=x-scheme-handler/element ;;
+		wza)
+			mime=x-scheme-handler/wza ;;
 	esac
 	protocol="^$protocol"
 fi
