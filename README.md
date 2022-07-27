@@ -107,11 +107,11 @@ MENUARGS: -b:-i:-f
 
 ## From AUR
 
-  You can find a handy `xdg-utils`-conflicting package [here](https://aur.archlinux.org/packages/mimi-bachoseven-git/).
+  You can find a handy package conflicting with `xdg-utils` [here](https://aur.archlinux.org/packages/mimi-bachoseven-git/).
 
   ---
 
-  <details<summary>Old README</summary>
+  <details><summary>Old README</summary>
 
 # Old README
 ## What is this?
@@ -163,6 +163,7 @@ MENUARGS: -b:-i:-f
   rar: xterm -e 2a
 
   but if you have time, using mime-type is more precise
+
   </details>
 
 # Alternatives
