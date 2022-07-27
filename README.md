@@ -111,9 +111,10 @@ MENUARGS: -b:-i:-f
 
   ---
 
+# Old README
+
   <details><summary>Old README</summary>
 
-# Old README
 ## What is this?
   mimi is an improved version of xdg-open.
   The original xdg-open works horribly without DE environment.
