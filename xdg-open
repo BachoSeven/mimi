@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -x
+
 readonly CONFIG="$HOME/.config/mimi/mimi.conf"
 
 find_in_config() {
@@ -160,7 +162,7 @@ for search in $ext $protocol $mime $general_mime; do
 	for w in "${app[@]}"; do
 		if [[ -n "$(echo "$w" | grep '^\$')" ]]; then
 			program="$(echo "$w" | sed 's/^\$//')"
-			app[$i]="$(env | grep "$program" | head -1 | cut -d = -f 2)"
+			app[$i]="$(env | grep "^$program=" | head -1 | cut -d = -f 2)"
 		fi
 		i=$((i+1));
 	done
