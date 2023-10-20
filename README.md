@@ -4,6 +4,7 @@
 
 <!-- vim-markdown-toc GFM -->
 
+* [(!) Upgrading the configuration from older mimi versions](#-upgrading-the-configuration-from-older-mimi-versions)
 * [Improvements from the original mimi](#improvements-from-the-original-mimi)
   * [New features](#new-features)
   * [Xdg-email](#xdg-email)
@@ -23,6 +24,16 @@
   * [Node.js (xD)](#nodejs-xd)
 
 <!-- vim-markdown-toc -->
+
+# (!) Upgrading the configuration from older mimi versions
+
+> TL;DR: configuration file is now called mimi.conf instead of mime.conf
+
+Since XDG Base Directory specifications indicate `$XDG_CONFIG_HOME/program/program.conf`,
+in this fork I've renamed the configuration file's location from
+`mime.conf` to `mimi.conf` (`$XDG_CONFIG_HOME` is usually `~/.config`, in case you didn't know).
+
+See issue #3 for details; thanks to @vaygr for bringing up this issue.
 
 # Improvements from the original mimi
 
