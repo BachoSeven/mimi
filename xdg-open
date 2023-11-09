@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-set -x
-
 readonly CONFIG="$HOME/.config/mimi/mimi.conf"
 
 find_in_config() {
