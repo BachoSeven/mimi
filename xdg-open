@@ -125,6 +125,8 @@ if [[ "$arg" =~ ^([a-zA-Z-]+): ]]; then
 			mime=x-scheme-handler/element ;;
 		wza)
 			mime=x-scheme-handler/wza ;;
+		vscode)
+			mime=x-scheme-handler/vscode ;;
 	esac
 	protocol="^$protocol"
 fi
