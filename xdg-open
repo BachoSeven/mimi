@@ -107,26 +107,8 @@ if [[ "$arg" =~ ^([a-zA-Z-]+): ]]; then
 		magnet)
 			mime=application/x-bittorrent
 			ext=torrent ;;
-		irc)
-			mime=x-scheme-handler/irc ;;
-		mailto)
-			mime=x-scheme-handler/mailto ;;
-		tg)
-			mime=x-scheme-handler/tg ;;
-		spotify)
-			mime=x-scheme-handler/spotify ;;
-		gemini)
-			mime=x-scheme-handler/gemini ;;
-		gopher)
-			mime=x-scheme-handler/gopher ;;
-		msteams)
-			mime=x-scheme-handler/msteams ;;
-		element)
-			mime=x-scheme-handler/element ;;
-		wza)
-			mime=x-scheme-handler/wza ;;
-		vscode)
-			mime=x-scheme-handler/vscode ;;
+		*)
+			mime=x-scheme-handler/"$protocol" ;;
 	esac
 	protocol="^$protocol"
 fi
