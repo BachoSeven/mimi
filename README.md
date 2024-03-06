@@ -117,8 +117,9 @@ MENUARGS: -b:-i:-f
   - To replace the system's `xdg-open` and `xdg-email`, just do `sudo make install`.
 
 ## From AUR
-
-  You can find a handy package conflicting with `xdg-utils` [here](https://aur.archlinux.org/packages/mimi-bachoseven-git/).
+You can find the following handy packages conflicting with `xdg-utils`:
+  - [mimi](https://aur.archlinux.org/packages/mimi)
+  - [mimi-git](https://aur.archlinux.org/packages/mimi-git)
 
   ---
 
