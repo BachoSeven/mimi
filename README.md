@@ -114,7 +114,8 @@ MENUARGS: -b:-i:-f
 ## From Git
 
   - Clone the repository: `git clone https://github.com/BachoSeven/mimi.git`
-  - To replace the system's `xdg-open` and `xdg-email`, just do `sudo make install`.
+  - To replace the system's `xdg-open` and `xdg-email`, just do `sudo make install`. Alternatively, add the scripts to your PATH and make them executable.
+  - Make sure that `file` is in your PATH, it is required by the scripts.
 
 ## From AUR
 You can find the following handy packages conflicting with `xdg-utils`:
