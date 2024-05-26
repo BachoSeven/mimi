@@ -27,7 +27,7 @@ url_decode() {
 }
 
 run() {
-	$SHELL -c "'$1' $(printf "%q " "${@:2}")"
+	bash -c "'$1' $(printf "%q " "${@:2}")"
 }
 
 fork_run() {
