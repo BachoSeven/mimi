@@ -168,7 +168,7 @@ done
 
 # ask
 if exists $MENU; then
-	app=($(IFS=:; stest -flx $PATH | sort -u | $MENU -p "how to open $(basename $arg)" $MENUARGS))
+	app=($(compgen -c | sort -u | $MENU -p "how to open $(basename $arg)" $MENUARGS))
 	[[ "${app[*]}" ]] && fork_run "${app[@]}" "$arg"
 elif exists notify-send; then
 	notify-send "Could not find opener, exiting..."
