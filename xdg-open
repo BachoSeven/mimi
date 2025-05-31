@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
 readonly CONFIG="$HOME/.config/mimi/mimi.conf"
+silent=false
+
 
 find_in_config() {
 	[[ -f "$CONFIG" ]] || return
@@ -31,7 +33,9 @@ run() {
 }
 
 fork_run() {
+	if ! $silent; then
 	echo "'$1' $(printf "%q " "${@:2}")"
+	fi
 	if tty -s; then
 	  # in interactive mode, just run normally.
 	  run "$@"
@@ -48,7 +52,11 @@ exists() {
 usage() {
 	cat <<-EOF
 
-	Usage: xdg-open [file|directory|protocol]
+	Usage: xdg-open [-sh] [file|directory|protocol]
+
+	Options:
+	  -s     Do not write to standard output
+	  -h     Print this help message
 
 	It opens a file according to the extension
 	To setup the extension, create $CONFIG
@@ -57,6 +65,17 @@ usage() {
 	EOF
 	exit 1
 }
+
+while getopts 'sh' OPTION; do
+	case "$OPTION" in
+		s)
+			silent=true
+			shift 1
+			;;
+		h) usage ;;
+		?) usage ;;
+	esac
+done
 
 # config
 # 1. ext
@@ -143,6 +162,7 @@ for search in $ext $protocol $mime $general_mime; do
 	i=0
 	for w in "${app[@]}"; do
 		if [[ -n "$(echo "$w" | grep '^\$')" ]]; then
+
 			program="$(echo "$w" | sed 's/^\$//')"
 			app[$i]="$(env | grep "^$program=" | head -1 | cut -d = -f 2)"
 		fi
