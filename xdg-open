@@ -18,7 +18,7 @@ find_exec_in_desktop_file() {
 
 find_desktop_file_by() {
 	local path=("$HOME/.local/share/applications")
-	[[ -z "$HOME/.local/share/applications" ]] && path=(/usr/share/applications/) || path+=(/usr/share/applications/)
+	[[ ! -d "$HOME/.local/share/applications" ]] && path=(/usr/share/applications/) || path+=(/usr/share/applications/)
 	grep -m 1 "^$1=.*$2" -R "${path[@]}" | awk -F : -v pat="$2" '{ print index($2, pat), length($2), $1 }' | sort -t ' ' -k1,1n -k2,2nr | awk '{ print $3; exit }'
 }
 
@@ -76,13 +76,13 @@ general_mime=''
 
 # fix file:// with support for file://.html#section
 if [[ "$arg" =~ ^file://([^#]*\.html)#.*$ ]]; then
-	protocol=file
+	protocol="file"
 	mime=text/html
 	ext=html
 elif [[ "$arg" =~ ^file://(.*)$ ]]; then
 	# strip file://
 	arg="$(url_decode <<<"${BASH_REMATCH[1]}")"
-	protocol=file
+	protocol="file"
 fi
 
 if [[ -e "$arg" ]]; then
@@ -142,9 +142,9 @@ for search in $ext $protocol $mime $general_mime; do
 	# handle environmental variables
 	i=0
 	for w in "${app[@]}"; do
-		if [[ -n "$(echo "$w" | grep '^\$')" ]]; then
-			program="$(echo "$w" | sed 's/^\$//')"
-			app[$i]="$(env | grep "^$program=" | head -1 | cut -d = -f 2)"
+		if echo "$w" | grep -q '^\$';then
+			program="${w#\$}"
+			app[i]="$(env | grep "^$program=" | head -1 | cut -d = -f 2)"
 		fi
 		i=$((i+1));
 	done
@@ -156,7 +156,7 @@ for search in $mime $general_mime; do
 	desktop="$(find_desktop_file_by MimeType "$search")"
 	if [[ "$desktop" ]]; then
 		echo "$desktop"
-		app=($(find_exec_in_desktop_file <"$desktop"))
+		app=($(find_exec_in_desktop_file "$@" <"$desktop"))
 		if need_terminal <"$desktop"; then
 			echo "term: $TERM"
 			exists "$TERM" && fork_run "$TERM" -e "${app[@]}" "$arg"
@@ -167,8 +167,8 @@ for search in $mime $general_mime; do
 done
 
 # ask
-if exists $MENU; then
-	app=($(compgen -c | sort -u | $MENU -p "how to open $(basename $arg)" $MENUARGS))
+if exists "$MENU"; then
+	app=($(compgen -c | sort -u | $MENU -p "how to open $(basename "$arg")" "$MENUARGS"))
 	[[ "${app[*]}" ]] && fork_run "${app[@]}" "$arg"
 elif exists notify-send; then
 	notify-send "Could not find opener, exiting..."
